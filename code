@@ -1,0 +1,56 @@
+int redled=2;
+int greenled=8;
+int blueled=12;
+int buttonpin=7;
+int ledstate=0;
+int buttonold=1;
+int buttonnew;
+
+//setting the pin modes
+void setup() {
+pinMode(redled, OUTPUT);
+pinMode(greenled, OUTPUT);
+pinMode(blueled, OUTPUT);
+pinMode(buttonpin, INPUT);
+Serial.begin(9600);
+}
+
+//read button input, "old" or "neutral" position is 1 since pull down resistor. 
+void loop() {
+buttonnew=digitalRead(buttonpin);
+Serial.println(buttonold);
+
+  //buttonpress detection, if button is pressed, button goes to 0, then back up to 1. 
+  //triggers change in color and change ledstate to continue the loop.
+if (buttonold==0 && buttonnew==1){
+  if (ledstate==0){
+    digitalWrite(redled, HIGH);
+    digitalWrite(greenled, LOW);
+    digitalWrite(blueled, LOW);
+    ledstate=1;
+  }
+    
+  else if (ledstate=1){
+    digitalWrite(redled, LOW);
+    digitalWrite(greenled, HIGH);
+    digitalWrite(blueled, LOW);
+    ledstate=2;
+  }
+    
+  else if (ledstate=2){
+    digitalWrite(redled, LOW);
+    digitalWrite(greenled, LOW);
+    digitalWrite(blueled, HIGH);
+    ledstate=3;
+  }
+    //start loop over
+  else if (ledstate=3){
+    digitalWrite(redled, LOW);
+    digitalWrite(greenled, LOW);
+    digitalWrite(blueled, LOW);
+    ledstate=0;
+  }
+}
+buttonold=buttonnew;
+}
+
